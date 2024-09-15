@@ -1,0 +1,4 @@
+Give me the full correct code implementation for @planner_bloc.dart 
+I need you to fix all the errors in this code and make sure the implementation logic is correct and perfect
+
+Give me the full correct code implementation for @contribution_screen.dart . The theme color is black, Yello, mustard and grey, make it work
