@@ -6,17 +6,31 @@ class AuthRepository {
   final Dio _dio = Dio();
 
   Future<User> authenticate(String nssfNumber, String password) async {
-    final response = await _dio.post('https://api.pensionapp.com/login', data: {
-      'nssf_number': nssfNumber,
-      'password': password,
-    });
+    // Commented out original authentication logic
+    // final response = await _dio.post('https://api.pensionapp.com/login', data: {
+    //   'nssf_number': nssfNumber,
+    //   'password': password,
+    // });
 
-    if (response.statusCode == 200) {
+    // if (response.statusCode == 200) {
+    //   SharedPreferences prefs = await SharedPreferences.getInstance();
+    //   prefs.setString('token', response.data['token']);
+    //   return User.fromJson(response.data['user']);
+    // } else {
+    //   throw Exception('Failed to authenticate');
+    // }
+
+   
+    final String testUsername = 'User1';
+    final String testPassword = 'pass123';
+
+    if (nssfNumber == testUsername && password == testPassword) {
+      // Simulating successful authentication
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString('token', response.data['token']);
-      return User.fromJson(response.data['user']);
+      prefs.setString('token', 'test_token');
+      return User(id: '1', name: 'Test User', nssfNumber: testUsername);
     } else {
-      throw Exception('Failed to authenticate');
+      throw Exception('Invalid credentials');
     }
   }
 

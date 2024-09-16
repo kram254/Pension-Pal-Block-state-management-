@@ -20,6 +20,11 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
   final Color mustardDark = Color(0xFFD4A017);
   final Color black = Colors.black;
   final Color grey = Colors.grey;
+  final Color white = Colors.white;
+
+  // Test credentials
+  final String testUsername = 'User1';
+  final String testPassword = 'pass123';
 
   @override
   void initState() {
@@ -30,6 +35,10 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
     );
     _fadeInAnimation = CurvedAnimation(parent: _animationController, curve: Curves.easeIn);
     _animationController.forward();
+
+    // Pre-fill the text fields with test credentials
+    nssfController.text = testUsername;
+    passwordController.text = testPassword;
   }
 
   @override
@@ -40,48 +49,41 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
     super.dispose();
   }
 
-
   void _onLoginPressed() {
-  // For testing purposes, you can use these credentials to bypass the login screen
-  final String testUsername = 'User1';
-  final String testPassword = 'pass123';
-
-  // Assuming you have a method to handle login logic
-  _login(testUsername, testPassword);
-}
-
-void _login(String username, String password) {
-  // Implement your login logic here
-  // For example, you can call an API to authenticate the user
-  if (username == 'User1' && password == 'pass123') {
-    // Navigate to the next screen or show a success message
-    print('Login successful');
-  } else {
-    // Show an error message
-    print('Invalid credentials');
+    final String username = nssfController.text;
+    final String password = passwordController.text;
+    _login(username, password);
   }
-}
 
-  // void _onLoginPressed() {
-  //   BlocProvider.of<AuthBloc>(context).add(
-  //     LoginSubmitted(
-  //       nssfNumber: nssfController.text,
-  //       password: passwordController.text,
-  //     ),
-  //   );
-  // }
+  void _login(String username, String password) {
+    if (username == testUsername && password == testPassword) {
+      print('Login successful');
+      
+      BlocProvider.of<AuthBloc>(context).add(
+        LoginSubmitted(
+          nssfNumber: testUsername,
+          password: testPassword,
+        ),
+      );
+    } else {
+      // Show an error message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Invalid credentials')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: grey,
+      backgroundColor: black,
       appBar: AppBar(
         title: Text(
           'Pension Pal Login',
           style: TextStyle(color: mustard, fontWeight: FontWeight.bold),
         ),
         backgroundColor: black,
-        elevation: 0,
+        elevation: 2,
         centerTitle: true,
       ),
       body: FadeTransition(
@@ -105,7 +107,7 @@ void _login(String username, String password) {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SizedBox(height: 80),
+                        
                         // App Logo
                         Center(
                           child: Image.asset(
@@ -114,9 +116,7 @@ void _login(String username, String password) {
                             fit: BoxFit.contain,
                           ),
                         ),
-                        SizedBox(height: 20),
-
-
+                        SizedBox(height: 50),
                         AnimatedContainer(
                           duration: Duration(milliseconds: 500),
                           curve: Curves.easeIn,
@@ -124,7 +124,7 @@ void _login(String username, String password) {
                           child: Text(
                             'Welcome Back',
                             style: TextStyle(
-                              color: black,
+                              color: white,
                               fontSize: 28,
                               fontWeight: FontWeight.bold,
                             ),
@@ -132,31 +132,53 @@ void _login(String username, String password) {
                         ),
                         TextField(
                           controller: nssfController,
+                          style: TextStyle(color: white),
                           decoration: InputDecoration(
                             labelText: 'NSSF Number',
+                            labelStyle: TextStyle(color: white),
                             prefixIcon: Icon(Icons.account_circle, color: mustardDark),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12.0),
+                              borderSide: BorderSide(color: white),
                             ),
-                            filled: true,
-                            fillColor: Colors.white,
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12.0),
+                              borderSide: BorderSide(color: white),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12.0),
+                              borderSide: BorderSide(color: mustard),
+                            ),
                           ),
                         ),
+
                         SizedBox(height: 20),
+                        
                         TextField(
                           controller: passwordController,
+                          style: TextStyle(color: white),
                           decoration: InputDecoration(
                             labelText: 'Password',
+                            labelStyle: TextStyle(color: white),
                             prefixIcon: Icon(Icons.lock, color: mustardDark),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12.0),
+                              borderSide: BorderSide(color: white),
                             ),
-                            filled: true,
-                            fillColor: Colors.white,
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12.0),
+                              borderSide: BorderSide(color: white),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12.0),
+                              borderSide: BorderSide(color: mustard),
+                            ),
                           ),
                           obscureText: true,
                         ),
+
                         SizedBox(height: 30),
+
                         BlocBuilder<AuthBloc, AuthState>(
                           builder: (context, state) {
                             if (state is AuthLoading) {
@@ -188,7 +210,7 @@ void _login(String username, String password) {
                             );
                           },
                         ),
-                        Spacer(),
+                        const SizedBox(height: 20),
                         FadeTransitionWidget(
                           child: TextButton(
                             onPressed: () {
@@ -212,10 +234,3 @@ void _login(String username, String password) {
     );
   }
 }
-
-
-
-
-
-
-
