@@ -47,7 +47,7 @@ class _PlannerScreenState extends State<PlannerScreen> with SingleTickerProvider
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   children: [
-                    Text(
+                    const Text(
                       'April 2024',
                       style: TextStyle(
                         color: Colors.black,
@@ -60,7 +60,7 @@ class _PlannerScreenState extends State<PlannerScreen> with SingleTickerProvider
                     Container(
                       height: 150,
                       color: Colors.grey.shade200,
-                      child: Center(
+                      child: const Center(
                         child: Text(
                           'Calendar Widget',
                           style: TextStyle(color: Colors.grey),
@@ -84,7 +84,7 @@ class _PlannerScreenState extends State<PlannerScreen> with SingleTickerProvider
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     children: [
-                      Row(
+                      const Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
@@ -104,12 +104,12 @@ class _PlannerScreenState extends State<PlannerScreen> with SingleTickerProvider
                           itemCount: 5,
                           itemBuilder: (context, index) {
                             return ListTile(
-                              leading: Icon(Icons.check_circle, color: Colors.green),
+                              leading: const Icon(Icons.check_circle, color: Colors.green),
                               title: Text(
                                 'Task ${index + 1}',
-                                style: TextStyle(color: Colors.black),
+                                style: const TextStyle(color: Colors.black),
                               ),
-                              trailing: Icon(Icons.arrow_forward_ios, color: Colors.grey, size: 16),
+                              trailing: const Icon(Icons.arrow_forward_ios, color: Colors.grey, size: 16),
                               onTap: () {},
                             );
                           },

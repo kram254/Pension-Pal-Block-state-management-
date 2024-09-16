@@ -12,6 +12,15 @@ abstract class PensionEvent extends Equatable {
 
 class LoadPensionData extends PensionEvent {}
 
+class AddPensionData extends PensionEvent {
+  final Pension pension;
+
+  const AddPensionData(this.pension);
+
+  @override
+  List<Object> get props => [pension];
+}
+
 abstract class PensionState extends Equatable {
   const PensionState();
 
@@ -46,6 +55,7 @@ class PensionBloc extends Bloc<PensionEvent, PensionState> {
 
   PensionBloc(this.pensionRepository) : super(PensionInitial()) {
     on<LoadPensionData>(_onLoadPensionData);
+    on<AddPensionData>(_onAddPensionData);
   }
 
   Future<void> _onLoadPensionData(
@@ -58,4 +68,19 @@ class PensionBloc extends Bloc<PensionEvent, PensionState> {
       emit(const PensionError("Failed to load pension data"));
     }
   }
+
+  Future<void> _onAddPensionData(
+      AddPensionData event, Emitter<PensionState> emit) async {
+    if (state is PensionLoaded) {
+      try {
+        await pensionRepository.addPensionData(event.pension);
+        final updatedPensions = List<Pension>.from((state as PensionLoaded).pensions)
+          ..add(event.pension);
+        emit(PensionLoaded(updatedPensions));
+      } catch (e) {
+        emit(const PensionError("Failed to add pension data"));
+      }
+    }
+  }
 }
+
